@@ -1,5 +1,62 @@
 import streamlit as st
 import pandas as pd
+import time
+
+# Custom CSS for animated Tails
+st.markdown("""
+<style>
+.tails-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    animation: float 3s ease-in-out infinite;
+}
+
+.tails-emoji {
+    font-size: 60px;
+    animation: spin 2s linear infinite, bounce 1s ease-in-out infinite;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: inline-block;
+}
+
+.tails-emoji:hover {
+    transform: scale(1.2);
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.tails-message {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    margin: 10px 0;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+""", unsafe_allow_html=True)
 
 # Page config
 st.set_page_config(
@@ -11,6 +68,32 @@ st.set_page_config(
 # Title and description
 st.title("🌐 My Simple Streamlit Website")
 st.write("Welcome! This is a simple website built using Streamlit.")
+
+# Animated Tails the Fox
+st.markdown("""
+<div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; animation: float 3s ease-in-out infinite;">
+    <div class="tails-emoji">🦊</div>
+</div>
+""", unsafe_allow_html=True)
+
+# Tails message
+if 'tails_message' not in st.session_state:
+    st.session_state.tails_message = ""
+
+tails_messages = [
+    "Hi! I'm Tails! ", 
+    "Da mint :3",
+    "Nice keyword analysis! 🔍",
+    "hehe >:3 ",
+    "Data is awesome! 📈"
+]
+
+if st.button("🦊 Talk to Tails!"):
+    import random
+    st.session_state.tails_message = random.choice(tails_messages)
+
+if st.session_state.tails_message:
+    st.markdown(f'<div class="tails-message">{st.session_state.tails_message}</div>', unsafe_allow_html=True)
 
 # Sidebar
 st.sidebar.header("Navigation")
