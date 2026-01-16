@@ -5,24 +5,44 @@ import time
 # Custom CSS for animated Tails
 st.markdown("""
 <style>
+.tails-sprite {
+    width: 64px;
+    height: 64px;
+    background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+        <circle cx="32" cy="32" r="28" fill="%23FFA500"/>
+        <circle cx="20" cy="25" r="3" fill="%23000"/>
+        <circle cx="44" cy="25" r="3" fill="%23000"/>
+        <path d="M 20 40 Q 32 48 44 40" stroke="%23000" stroke-width="2" fill="none"/>
+        <circle cx="15" cy="15" r="8" fill="%23FFA500"/>
+        <circle cx="49" cy="15" r="8" fill="%23FFA500"/>
+        <circle cx="10" cy="10" r="5" fill="%23FFA500"/>
+        <circle cx="54" cy="10" r="5" fill="%23FFA500"/>
+        <circle cx="8" cy="8" r="3" fill="%23FFF"/>
+        <circle cx="56" cy="8" r="3" fill="%23FFF"/>
+    </svg>') no-repeat center;
+    background-size: contain;
+    animation: tails-sprite-animation 0.8s steps(4) infinite, float 3s ease-in-out infinite;
+}
+
 .tails-container {
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 9999;
-    animation: float 3s ease-in-out infinite;
-}
-
-.tails-emoji {
-    font-size: 60px;
-    animation: spin 2s linear infinite, bounce 1s ease-in-out infinite;
     cursor: pointer;
     transition: transform 0.3s ease;
-    display: inline-block;
 }
 
-.tails-emoji:hover {
+.tails-container:hover {
     transform: scale(1.2);
+}
+
+@keyframes tails-sprite-animation {
+    0% { transform: translateX(0) rotate(0deg); }
+    25% { transform: translateX(-5px) rotate(-5deg); }
+    50% { transform: translateX(0) rotate(0deg); }
+    75% { transform: translateX(5px) rotate(5deg); }
+    100% { transform: translateX(0) rotate(0deg); }
 }
 
 @keyframes float {
@@ -35,13 +55,8 @@ st.markdown("""
     100% { transform: rotate(360deg); }
 }
 
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
 .tails-message {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #FFA500 0%, #FF6347 100%);
     color: white;
     padding: 10px 15px;
     border-radius: 20px;
@@ -49,11 +64,28 @@ st.markdown("""
     margin: 10px 0;
     text-align: center;
     animation: fadeIn 0.5s ease-in;
+    font-weight: bold;
 }
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+.tails-button {
+    background: linear-gradient(135deg, #FFA500 0%, #FF6347 100%);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tails-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(255, 165, 0, 0.4);
 }
 </style>
 """, unsafe_allow_html=True)
@@ -71,8 +103,8 @@ st.write("Welcome! This is a simple website built using Streamlit.")
 
 # Animated Tails the Fox
 st.markdown("""
-<div style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; animation: float 3s ease-in-out infinite;">
-    <div class="tails-emoji">🦊</div>
+<div class="tails-container">
+    <div class="tails-sprite"></div>
 </div>
 """, unsafe_allow_html=True)
 
@@ -88,7 +120,7 @@ tails_messages = [
     "Data is awesome! 📈"
 ]
 
-if st.button("🦊 Talk to Tails!"):
+if st.button("🦊 Talk to Tails!", key="tails_button"):
     import random
     st.session_state.tails_message = random.choice(tails_messages)
 
