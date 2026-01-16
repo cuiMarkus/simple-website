@@ -34,7 +34,10 @@ elif page == "Keyword Dashboard":
 
     @st.cache_data
     def load_keyword_data():
-        df = pd.read_csv("testout.csv")
+        try:
+            df = pd.read_csv("testout.csv", encoding='utf-8')
+        except UnicodeDecodeError:
+            df = pd.read_csv("testout.csv", encoding='cp949')
         return df
 
     keyword_df = load_keyword_data()
