@@ -34,7 +34,12 @@ elif page == "News":
 
     @st.cache_data
     def load_news():
-        return pd.read_csv("testout.csv")   # or read_excel
+        try:
+            return pd.read_csv("testout.csv", encoding='utf-8')
+        except UnicodeDecodeError:
+            return pd.read_csv("testout.csv", encoding='cp949')  # Korean encoding
+        except UnicodeDecodeError:
+            return pd.read_csv("testout.csv", encoding='latin-1')  # Fallback
 
     news_df = load_news()
     df = news_df.copy()
@@ -78,3 +83,12 @@ elif page == "Contact":
     st.write("You can reach me at:")
     st.write("- Email: p20901@sw.hs.kr")
     st.write("- GitHub: https://github.com/cuiMarkus")
+
+
+
+
+
+
+
+
+
