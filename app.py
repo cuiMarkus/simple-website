@@ -43,7 +43,7 @@ st.title("🗞️ News Dashboard")
 
 df = news_df.copy()
 
-st.write(df.head()
+st.write(df.head())
 
     if search:
         df = df[df.apply(
@@ -79,6 +79,7 @@ elif page == "Contact":
     st.write("You can reach me at:")
     st.write("- Email: p20901@sw.hs.kr")
     st.write("- GitHub: https://github.com/cuiMarkus")
+
 
 
 
