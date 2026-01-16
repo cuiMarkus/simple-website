@@ -53,6 +53,8 @@ st.write(df.head())
             axis=1
         )]
 
+    st.dataframe(df)
+
     st.metric("Total Articles", len(df))
 
     for _, row in df.iterrows():
@@ -81,6 +83,7 @@ elif page == "Contact":
     st.write("You can reach me at:")
     st.write("- Email: p20901@sw.hs.kr")
     st.write("- GitHub: https://github.com/cuiMarkus")
+
 
 
 
