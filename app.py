@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 
 # Page config
 st.set_page_config(
@@ -31,21 +32,14 @@ elif page == "News":
     st.subheader("🗞️ News Dashboard")
     st.caption("Source: testout.csv")
 
+    @st.cache_data
+    def load_news():
+        return pd.read_csv("testout.csv")   # or read_excel
+
+    news_df = load_news()
+    df = news_df.copy()
+
     search = st.text_input("Search news")
-
-st.write("news_df exists:", "news_df" in globals())
-
-@st.cache_data
-def load_news():
-    return pd.read_csv("testout.csv")   # or read_excel
-
-news_df = load_news()
-
-st.title("🗞️ News Dashboard")
-
-df = news_df.copy()
-
-st.write(df.head())
 
     if search:
         df = df[df.apply(
@@ -53,6 +47,7 @@ st.write(df.head())
             axis=1
         )]
 
+    st.write(df.head())
     st.dataframe(df)
 
     st.metric("Total Articles", len(df))
@@ -83,12 +78,3 @@ elif page == "Contact":
     st.write("You can reach me at:")
     st.write("- Email: p20901@sw.hs.kr")
     st.write("- GitHub: https://github.com/cuiMarkus")
-
-
-
-
-
-
-
-
-
