@@ -13,7 +13,7 @@ st.write("Welcome! This is a simple website built using Streamlit.")
 
 # Sidebar
 st.sidebar.header("Navigation")
-page = st.sidebar.selectbox("Go to", ["Home", "About", "Contact"])
+page = st.sidebar.selectbox("Go to", ["Home", "News", "About", "Contact"])
 
 # Pages
 if page == "Home":
@@ -67,8 +67,9 @@ elif page == "About":
 elif page == "Contact":
     st.subheader("📧 Contact")
     st.write("You can reach me at:")
-    st.write("- Email: example@email.com")
-    st.write("- GitHub: https://github.com/yourusername")
+    st.write("- Email: p20901@sw.hs.kr")
+    st.write("- GitHub: https://github.com/cuiMarkus")
+
 
 
 
