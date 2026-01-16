@@ -31,12 +31,9 @@ elif page == "News":
     st.subheader("🗞️ News Dashboard")
     st.caption("Source: testout.csv")
 
-
     search = st.text_input("Search news")
 
-
     df = news_df.copy()
-
 
     if search:
         df = df[df.apply(
@@ -45,7 +42,6 @@ elif page == "News":
         )]
 
     st.metric("Total Articles", len(df))
-
 
     for _, row in df.iterrows():
         with st.container():
@@ -73,5 +69,6 @@ elif page == "Contact":
     st.write("You can reach me at:")
     st.write("- Email: example@email.com")
     st.write("- GitHub: https://github.com/yourusername")
+
 
 
