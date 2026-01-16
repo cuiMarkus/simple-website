@@ -33,6 +33,12 @@ elif page == "News":
 
     search = st.text_input("Search news")
 
+@st.cache_data
+def load_news():
+    return pd.read_csv("testout.csv")   # or read_excel
+
+news_df = load_news()
+
     df = news_df.copy()
 
     if search:
@@ -69,6 +75,7 @@ elif page == "Contact":
     st.write("You can reach me at:")
     st.write("- Email: p20901@sw.hs.kr")
     st.write("- GitHub: https://github.com/cuiMarkus")
+
 
 
 
