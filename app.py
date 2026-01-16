@@ -14,7 +14,7 @@ st.write("Welcome! This is a simple website built using Streamlit.")
 
 # Sidebar
 st.sidebar.header("Navigation")
-page = st.sidebar.selectbox("Go to", ["Home", "News", "About", "Contact"])
+page = st.sidebar.selectbox("Go to", ["Home", "Keyword Dashboard", "About", "Contact"])
 
 # Pages
 if page == "Home":
@@ -28,45 +28,52 @@ if page == "Home":
     if st.button("Click me"):
         st.balloons()
 
-elif page == "News":
-    st.subheader("🗞️ News Dashboard")
+elif page == "Keyword Dashboard":
+    st.subheader("� Keyword Dashboard")
     st.caption("Source: testout.csv")
 
     @st.cache_data
-    def load_news():
-        try:
-            return pd.read_csv("testout.csv", encoding='utf-8')
-        except UnicodeDecodeError:
-            return pd.read_csv("testout.csv", encoding='cp949')  # Korean encoding
-        except UnicodeDecodeError:
-            return pd.read_csv("testout.csv", encoding='latin-1')  # Fallback
+    def load_keyword_data():
+        df = pd.read_csv("testout.csv")
+        return df
 
-    news_df = load_news()
-    df = news_df.copy()
+    keyword_df = load_keyword_data()
+    df = keyword_df.copy()
 
-    search = st.text_input("Search news")
+    # Search functionality
+    search = st.text_input("Search keywords")
 
     if search:
-        df = df[df.apply(
-            lambda row: row.astype(str).str.contains(search, case=False).any(),
-            axis=1
-        )]
+        df = df[df['키워드'].str.contains(search, case=False, na=False)]
 
-    st.write(df.head())
-    st.dataframe(df)
-
-    st.metric("Total Articles", len(df))
-
-    for _, row in df.iterrows():
-        with st.container():
-            st.markdown(f"### {row.get('title', 'No title')}")
-            if 'source' in row:
-                st.caption(row.get('source'))
-            if 'description' in row:
-                st.write(row.get('description'))
-            if 'url' in row:
-                st.markdown(f"[Read more]({row.get('url')})")
-            st.divider()
+    # Display metrics
+    st.metric("Total Keywords", len(df))
+    
+    # Get date columns (all columns except the first one which is '키워드')
+    date_columns = df.columns[1:]
+    
+    if not df.empty:
+        # Calculate total frequency for each keyword
+        df['총 빈도수'] = df[date_columns].sum(axis=1)
+        
+        # Sort by total frequency
+        df_sorted = df.sort_values('총 빈도수', ascending=False)
+        
+        # Display top keywords
+        st.subheader("📊 Top Keywords by Total Frequency")
+        top_keywords = df_sorted.head(10)
+        
+        for _, row in top_keywords.iterrows():
+            with st.container():
+                keyword = row['키워드']
+                total_freq = row['총 빈도수']
+                st.markdown(f"### **{keyword}**")
+                st.metric("Total Frequency", int(total_freq))
+                
+                # Show frequency chart for this keyword
+                freq_data = row[date_columns]
+                st.bar_chart(freq_data)
+                st.divider()
 
     with st.expander("🔍 View raw data"):
         st.dataframe(df)
